@@ -9,6 +9,7 @@
       style="background-image: url(./images/bg-desktop-dark.jpg)"
     ></div>
   </div>
+  <div class="absolute -z-20 h-screen w-screen bg-primary"></div>
 </template>
 
 <script setup></script>
