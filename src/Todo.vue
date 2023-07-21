@@ -52,18 +52,23 @@
             </button>
           </div>
         </li>
+        <div>
+          <p>Items left to do: {{ remainingItems }}</p>
+        </div>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const todos = ref([]);
 let newTodo = ref("");
 const active = ref([]);
 let items = ref(0);
+let totalItems = ref(0);
+let selectedCount = ref(0);
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
@@ -77,12 +82,19 @@ const removeTodo = (index) => {
   todos.value.splice(index, 1);
   active.value.splice(index, 1);
   items.value--;
-  console.log(items.value);
+
+  // console.log(items.value);
 };
 
 const completed = (index) => {
   active.value[index] = !active.value[index];
+  totalItems.value++;
+  // console.log(totalItems.value);
 };
+
+const remainingItems = computed(() => {
+  return items.value - selectedCount.value;
+});
 </script>
 
 <style scoped></style>
