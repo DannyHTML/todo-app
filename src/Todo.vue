@@ -78,6 +78,10 @@ const addTodo = () => {
   }
 };
 
+const remainingItems = computed(() => {
+  return items.value - selectedCount.value;
+});
+
 const removeTodo = (index) => {
   todos.value.splice(index, 1);
   active.value.splice(index, 1);
@@ -89,12 +93,18 @@ const removeTodo = (index) => {
 const completed = (index) => {
   active.value[index] = !active.value[index];
   totalItems.value++;
+  itemsTodo(index);
   // console.log(totalItems.value);
 };
 
-const remainingItems = computed(() => {
-  return items.value - selectedCount.value;
-});
+const itemsTodo = (index) => {
+  if (active.value[index]) {
+    selectedCount.value++;
+  }
+  if (!active.value[index]) {
+    selectedCount.value--;
+  }
+};
 </script>
 
 <style scoped></style>
