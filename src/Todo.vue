@@ -52,8 +52,9 @@
             </button>
           </div>
         </li>
-        <div>
-          <p>Items left to do: {{ remainingItems }}</p>
+        <div class="flex justify-between text-white text-opacity-90">
+          <p class="">{{ remainingItems }} items left</p>
+          <button @click="RemoveAllClearTodo">Clear Completed</button>
         </div>
       </ul>
     </div>
@@ -83,6 +84,9 @@ const remainingItems = computed(() => {
 });
 
 const removeTodo = (index) => {
+  if (active.value[index]) {
+    selectedCount.value--;
+  }
   todos.value.splice(index, 1);
   active.value.splice(index, 1);
   items.value--;
@@ -101,7 +105,14 @@ const itemsTodo = (index) => {
     selectedCount.value--;
   }
 };
+
+// Mee verder
+const RemoveAllClearTodo = (index) => {
+  if (active.value[index]) {
+    todos.value.splice(index);
+  }
+};
 </script>
-<!-- If item is selected, dont --count removed -->
+<!-- If item is selected, dont --count removed -- solved in removeTodo if statement. -->
 
 <style scoped></style>
