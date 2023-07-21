@@ -97,11 +97,11 @@ const completed = (index) => {
 const itemsTodo = (index) => {
   if (active.value[index]) {
     selectedCount.value++;
-  }
-  if (!active.value[index]) {
+  } else {
     selectedCount.value--;
   }
 };
 </script>
+<!-- If item is selected, dont --count removed -->
 
 <style scoped></style>
