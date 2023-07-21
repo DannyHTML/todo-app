@@ -106,10 +106,10 @@ const itemsTodo = (index) => {
   }
 };
 
-// Mee verder
+// Mee verder, niet goed
 const RemoveAllClearTodo = (index) => {
-  if (active.value[index]) {
-    todos.value.splice(index);
+  if (!active.value[index]) {
+    removeTodo(index);
   }
 };
 </script>
