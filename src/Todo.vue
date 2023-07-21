@@ -86,15 +86,12 @@ const removeTodo = (index) => {
   todos.value.splice(index, 1);
   active.value.splice(index, 1);
   items.value--;
-
-  // console.log(items.value);
 };
 
 const completed = (index) => {
   active.value[index] = !active.value[index];
   totalItems.value++;
   itemsTodo(index);
-  // console.log(totalItems.value);
 };
 
 const itemsTodo = (index) => {
