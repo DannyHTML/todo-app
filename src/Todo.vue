@@ -21,7 +21,7 @@
         />
       </div>
 
-      <ul class="text-white mx-8 capitalize">
+      <ul class="text-white mx-8">
         <transition-group name="fade">
           <li
             v-for="(todo, index) in todos"
