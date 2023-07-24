@@ -90,7 +90,8 @@ let items = ref(0);
 let totalItems = ref(0);
 let selectedCount = ref(0);
 
-// objecten
+// Objecten
+// Turn on auto save 
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
