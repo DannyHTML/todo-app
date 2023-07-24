@@ -90,9 +90,14 @@ let items = ref(0);
 let totalItems = ref(0);
 let selectedCount = ref(0);
 
+// objecten
+
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
-    todos.value.push(newTodo.value);
+    todos.value.push({ 
+      text: newTodo.value,
+      status: true,
+    });
     newTodo.value = "";
     items.value++;
   }
