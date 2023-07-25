@@ -27,26 +27,22 @@
             v-for="(todo, index) in filteredTodos"
             :key="index"
             class="border-b w-full bg-gray-800 border-gray-500 text-white duration-200"
-            :class="{
-              active: active,
-              'text-opacity-30 line-through duration-200': active[index],
-            }"
+            :class="{ 'line-through text-opacity-30 italic': todo.status }"
           >
             <div class="relative mx-3 py-4 flex">
               <div
                 class="absolute border-2 h-6 w-6 rounded-full border-white border-opacity-30 cursor-pointer duration-300"
                 :class="{
-                  active: active[index],
-                  'bg-gradient-to-br from-blue-500 to-purple-700 border-transparent duration-300':
-                    active[index],
+                  'bg-gradient-to-br from-blue-500 to-purple-700 border-transparent duration-300 ':
+                    todo.status,
                 }"
-                @click="completed(index)"
+                @click="toggleStatus(todo)"
               >
                 <img
                   class="absolute select-none translate-x-1/2 translate-y-1/2"
                   src="/images/icon-check.svg"
                   alt=""
-                  :class="{ hidden: !active[index] }"
+                  :class="{ hidden: !todo.status }"
                 />
               </div>
               <span class="ml-8">{{ todo.text }}</span>
@@ -60,7 +56,7 @@
         <div
           class="flex justify-between text-white p-3 w-full rounded-b-md bg-gray-800 px-6 text-opacity-50"
         >
-          <p class="">{{ remainingItems }} items left</p>
+          <p class="">{{ items }} items left</p>
           <div class="hidden lg:flex lg:gap-3">
             <button>All</button>
             <button>Active</button>
@@ -85,67 +81,32 @@ import { ref, computed } from "vue";
 
 const todos = ref([]);
 let newTodo = ref("");
-const active = ref([]);
 let items = ref(0);
-let totalItems = ref(0);
-let selectedCount = ref(0);
 const filter = ref("all");
-
-// Objecten
-// Turn on auto save
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
     todos.value.push({
       text: newTodo.value,
-      status: true,
+      status: false,
     });
     newTodo.value = "";
     items.value++;
   }
 };
 
-const remainingItems = computed(() => {
-  return items.value - selectedCount.value;
-});
+const toggleStatus = (todos) => {
+  if ((todos.status = !todos.status)) {
+    items.value--;
+  } else items.value++;
+};
 
 const removeTodo = (index) => {
-  if (active.value[index]) {
-    selectedCount.value--;
-  }
-  todos.value.splice(index, 1);
-  active.value.splice(index, 1);
-  items.value--;
-};
-
-const completed = (index) => {
-  active.value[index] = !active.value[index];
-  todos.value[index].status = !todos.value[index].status;
-  itemsTodo(index);
-};
-
-// const itemsTodo = (index) => {
-//   if (active.value[index] && !todos.value[index].status) {
-//     selectedCount.value++;
-//   } else if (!active.value[index] && todos.value[index].status) {
-//     selectedCount.value--;
-//   }
-// };
-
-// const itemsTodo = (index) => {
-//   if (active.value[index]) {
-//     selectedCount.value++;
-//   } else {
-//     selectedCount.value--;
-//   }
-// };
-
-const RemoveAllClearTodo = () => {
-  for (let i = active.value.length - 1; i >= 0; i--) {
-    if (active.value[i]) {
-      todos.value.splice(i, 1);
-      active.value.splice(i, 1);
-    }
+  if (!todos.value[index].status) {
+    todos.value.splice(index, 1);
+    items.value--;
+  } else {
+    todos.value.splice(index, 1);
   }
 };
 
@@ -160,4 +121,50 @@ const filteredTodos = computed(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.test {
+  text-decoration: line-through;
+}
+</style>
+
+<!-- const completed = (index) => {
+  if (todos.value[index]) {
+    todos.value[index].status = !todos.value[index].status;
+    if (todos.value[index].status) {
+      selectedCount.value++;
+    } else {
+      selectedCount.value--;
+    }
+  }
+}; -->
+
+<!-- const RemoveAllClearTodo = () => {
+  for (let i = active.value.length - 1; i >= 0; i--) {
+    if (active.value[i]) {
+      todos.value.splice(i, 1);
+      active.value.splice(i, 1);
+    }
+  }
+}; -->
+
+<!-- const completed = (index) => {
+  active.value[index] = !active.value[index];
+  todos.value.status = !todos.value.status;
+  itemsTodo(index);
+}; -->
+
+<!--  const itemsTodo = (index) => {
+     if (active.value[index] && !todos.value[index].status) {
+       selectedCount.value++;
+     } else if (!active.value[index] && todos.value[index].status) {
+       selectedCount.value--;
+     }
+   };
+  
+   const itemsTodo = (index) => {
+     if (active.value[index]) {
+       selectedCount.value++;
+     } else {
+       selectedCount.value--;
+     }
+   }; -->
