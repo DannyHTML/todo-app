@@ -62,7 +62,7 @@
             <button @click="setFilter('active')">Active</button>
             <button @click="setFilter('completed')">Completed</button>
           </div>
-          <button @click="RemoveAllCompletedTodo(index)">
+          <button @click="removeAllCompletedTodo(index)">
             Clear Completed
           </button>
         </div>
@@ -126,12 +126,8 @@ const removeTodo = (index) => {
   }
 };
 
-const RemoveAllCompletedTodo = () => {
-  for (let i = todos.value.length - 1; i >= 0; i--) {
-    if (todos.value[i].status) {
-      todos.value.splice(i, 1);
-    }
-  }
+const removeAllCompletedTodo = () => {
+  todos.value = todos.value.filter((todo) => !todo.status);
 };
 </script>
 
