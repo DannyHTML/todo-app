@@ -24,7 +24,7 @@
       <ul class="text-white mx-8">
         <transition-group name="fade">
           <li
-            v-for="(todo, index) in todos"
+            v-for="(todo, index) in filteredTodos"
             :key="index"
             class="border-b w-full bg-gray-800 border-gray-500 text-white duration-200"
             :class="{
@@ -49,7 +49,7 @@
                   :class="{ hidden: !active[index] }"
                 />
               </div>
-              <span class="ml-8">{{ todo }}</span>
+              <span class="ml-8">{{ todo.text }}</span>
               <button class="ml-auto" @click="removeTodo(index)">
                 <img src="/images/icon-cross.svg" alt="Delete" />
               </button>
@@ -71,9 +71,9 @@
         <div
           class="flex justify-center gap-4 mt-4 text-white p-3 rounded-md bg-gray-800 px-6 text-opacity-50 lg:hidden"
         >
-          <button @click="showAll">All</button>
-          <button @click="showActive">Active</button>
-          <button @click="showCompleted">Completed</button>
+          <button @click="filter = 'all'">All</button>
+          <button @click="filter = 'active'">Active</button>
+          <button @click="filter = 'completed'">Completed</button>
         </div>
       </ul>
     </div>
@@ -89,13 +89,14 @@ const active = ref([]);
 let items = ref(0);
 let totalItems = ref(0);
 let selectedCount = ref(0);
+const filter = ref("all");
 
 // Objecten
-// Turn on auto save 
+// Turn on auto save
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
-    todos.value.push({ 
+    todos.value.push({
       text: newTodo.value,
       status: true,
     });
@@ -119,7 +120,7 @@ const removeTodo = (index) => {
 
 const completed = (index) => {
   active.value[index] = !active.value[index];
-  totalItems.value++;
+  todos.value[index].status = !todos.value[index].status;
   itemsTodo(index);
 };
 
@@ -140,11 +141,15 @@ const RemoveAllClearTodo = () => {
   }
 };
 
-const showAll = () => {};
-
-const showActive = () => {};
-
-const showCompleted = () => {};
+const filteredTodos = computed(() => {
+  if (filter.value === "all") {
+    return todos.value;
+  } else if (filter.value === "active") {
+    return todos.value.filter((todo) => todo.status);
+  } else if (filter.value === "completed") {
+    return todos.value.filter((todo) => !todo.status);
+  }
+});
 </script>
 
 <style scoped></style>
