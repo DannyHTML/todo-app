@@ -124,13 +124,21 @@ const completed = (index) => {
   itemsTodo(index);
 };
 
-const itemsTodo = (index) => {
-  if (active.value[index]) {
-    selectedCount.value++;
-  } else {
-    selectedCount.value--;
-  }
-};
+// const itemsTodo = (index) => {
+//   if (active.value[index] && !todos.value[index].status) {
+//     selectedCount.value++;
+//   } else if (!active.value[index] && todos.value[index].status) {
+//     selectedCount.value--;
+//   }
+// };
+
+// const itemsTodo = (index) => {
+//   if (active.value[index]) {
+//     selectedCount.value++;
+//   } else {
+//     selectedCount.value--;
+//   }
+// };
 
 const RemoveAllClearTodo = () => {
   for (let i = active.value.length - 1; i >= 0; i--) {
