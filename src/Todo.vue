@@ -81,14 +81,14 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const todos = ref([]);
+let todo = ref([]);
 let newTodo = ref("");
 let items = ref(0);
 let filter = ref("all");
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
-    todos.value.push({
+    todo.value.push({
       text: newTodo.value,
       status: false,
     });
@@ -99,11 +99,11 @@ const addTodo = () => {
 
 const filteredTodos = computed(() => {
   if (filter.value === "all") {
-    return todos.value;
+    return todo.value;
   } else if (filter.value === "active") {
-    return todos.value.filter((todo) => !todo.status);
+    return todo.value.filter((todo) => !todo.status);
   } else if (filter.value === "completed") {
-    return todos.value.filter((todo) => todo.status);
+    return todo.value.filter((todo) => todo.status);
   }
 });
 
@@ -111,23 +111,23 @@ const setFilter = (value) => {
   filter.value = value;
 };
 
-const toggleStatus = (todos) => {
-  if ((todos.status = !todos.status)) {
+const toggleStatus = (todo) => {
+  if ((todo.status = !todo.status)) {
     items.value--;
   } else items.value++;
 };
 
 const removeTodo = (index) => {
-  if (!todos.value[index].status) {
-    todos.value.splice(index, 1);
+  if (!todo.value[index].status) {
+    todo.value.splice(index, 1);
     items.value--;
   } else {
-    todos.value.splice(index, 1);
+    todo.value.splice(index, 1);
   }
 };
 
 const removeAllCompletedTodo = () => {
-  todos.value = todos.value.filter((todo) => !todo.status);
+  todo.value = todo.value.filter((todo) => !todo.status);
 };
 </script>
 
