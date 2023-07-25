@@ -58,18 +58,20 @@
         >
           <p class="">{{ items }} items left</p>
           <div class="hidden lg:flex lg:gap-3">
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
+            <button @click="setFilter('all')">All</button>
+            <button @click="setFilter('active')">Active</button>
+            <button @click="setFilter('completed')">Completed</button>
           </div>
-          <button @click="RemoveAllClearTodo">Clear Completed</button>
+          <button @click="RemoveAllCompletedTodo(index)">
+            Clear Completed
+          </button>
         </div>
         <div
           class="flex justify-center gap-4 mt-4 text-white p-3 rounded-md bg-gray-800 px-6 text-opacity-50 lg:hidden"
         >
-          <button @click="filter = 'all'">All</button>
-          <button @click="filter = 'active'">Active</button>
-          <button @click="filter = 'completed'">Completed</button>
+          <button @click="setFilter('all')">All</button>
+          <button @click="setFilter('active')">Active</button>
+          <button @click="setFilter('completed')">Completed</button>
         </div>
       </ul>
     </div>
@@ -82,7 +84,7 @@ import { ref, computed } from "vue";
 const todos = ref([]);
 let newTodo = ref("");
 let items = ref(0);
-const filter = ref("all");
+let filter = ref("all");
 
 const addTodo = () => {
   if (newTodo.value.trim() !== "") {
@@ -93,6 +95,20 @@ const addTodo = () => {
     newTodo.value = "";
     items.value++;
   }
+};
+
+const filteredTodos = computed(() => {
+  if (filter.value === "all") {
+    return todos.value;
+  } else if (filter.value === "active") {
+    return todos.value.filter((todo) => !todo.status);
+  } else if (filter.value === "completed") {
+    return todos.value.filter((todo) => todo.status);
+  }
+});
+
+const setFilter = (value) => {
+  filter.value = value;
 };
 
 const toggleStatus = (todos) => {
@@ -110,61 +126,13 @@ const removeTodo = (index) => {
   }
 };
 
-const filteredTodos = computed(() => {
-  if (filter.value === "all") {
-    return todos.value;
-  } else if (filter.value === "active") {
-    return todos.value.filter((todo) => todo.status);
-  } else if (filter.value === "completed") {
-    return todos.value.filter((todo) => !todo.status);
+const RemoveAllCompletedTodo = () => {
+  for (let i = todos.value.length - 1; i >= 0; i--) {
+    if (todos.value[i].status) {
+      todos.value.splice(i, 1);
+    }
   }
-});
+};
 </script>
 
-<style scoped>
-.test {
-  text-decoration: line-through;
-}
-</style>
-
-<!-- const completed = (index) => {
-  if (todos.value[index]) {
-    todos.value[index].status = !todos.value[index].status;
-    if (todos.value[index].status) {
-      selectedCount.value++;
-    } else {
-      selectedCount.value--;
-    }
-  }
-}; -->
-
-<!-- const RemoveAllClearTodo = () => {
-  for (let i = active.value.length - 1; i >= 0; i--) {
-    if (active.value[i]) {
-      todos.value.splice(i, 1);
-      active.value.splice(i, 1);
-    }
-  }
-}; -->
-
-<!-- const completed = (index) => {
-  active.value[index] = !active.value[index];
-  todos.value.status = !todos.value.status;
-  itemsTodo(index);
-}; -->
-
-<!--  const itemsTodo = (index) => {
-     if (active.value[index] && !todos.value[index].status) {
-       selectedCount.value++;
-     } else if (!active.value[index] && todos.value[index].status) {
-       selectedCount.value--;
-     }
-   };
-  
-   const itemsTodo = (index) => {
-     if (active.value[index]) {
-       selectedCount.value++;
-     } else {
-       selectedCount.value--;
-     }
-   }; -->
+<style scoped></style>
